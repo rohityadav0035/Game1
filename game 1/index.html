@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .choices {
+        width: 90%;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    img {
+        width: 200px;
+        border-radius: 50%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .heading {
+        text-align: center;
+    }
+
+    .score-board {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .score-board p {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    #msg {
+        display: inline;
+        text-align: center;
+        color: white;
+        background-color: rgb(7, 25, 102);
+        padding: 5px;
+    }
+
+    #msgcontainer {
+        width: 80%;
+        margin: 50px auto;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<body>
+    <h1 class="heading">Rock Paper Scissor</h1>
+    <div class="choices">
+        <div class="choice" id="rock">
+            <img src="rock.png" alt="">
+        </div>
+        <div class="choice" id="paper">
+            <img src="paper.png" alt="">
+        </div>
+        <div class="choice" id="scissor">
+            <img src="scissors.png" alt="">
+        </div>
+
+    </div>
+    <div class="score-board">
+        <div class="score">
+            <p class="user-score">0</p>
+            <p>you</p>
+        </div>
+        <div class="score">
+            <p class="comp-score">0</p>
+            <p>computer</p>
+        </div>
+    </div>
+    <div id="msgcontainer">
+        <p id="msg">play your move</p>
+    </div>
+    <script>
+        let userScore = 0;
+        let compScore = 0;
+        
+        const genCompChoice = () => {
+            const options = ["rock", "paper", "scissor"];
+            const randIdx = Math.floor(Math.random() * 3);
+            return options[randIdx];
+        }
+        
+        const playGame = (userChoice) => {
+            console.log("User choice=", userChoice);
+            const compChoice = genCompChoice();
+            console.log("Computer choice=", compChoice);
+
+            // Update message
+            const msg = document.getElementById("msg");
+            msg.textContent = `You chose ${userChoice}. Computer chose ${compChoice}.`;
+
+            // Determine winner
+            if (userChoice === compChoice) {
+                msg.textContent += " It's a tie!";
+            } else if (
+                (userChoice === "rock" && compChoice === "scissor") ||
+                (userChoice === "paper" && compChoice === "rock") ||
+                (userChoice === "scissor" && compChoice === "paper")
+            ) {
+                msg.textContent += " You win!";
+                userScore++;
+            } else {
+                msg.textContent += " Computer wins!";
+                compScore++;
+            }
+
+            // Update scores
+            document.querySelector(".user-score").textContent = userScore;
+            document.querySelector(".comp-score").textContent = compScore;
+        }
+        
+        const choices = document.querySelectorAll(".choice");
+        choices.forEach((choice) => {
+            choice.addEventListener('click', () => {
+                const userChoice = choice.getAttribute("id");
+                playGame(userChoice);
+            });
+        });
+    </script>
+</body>
+
+</html>
